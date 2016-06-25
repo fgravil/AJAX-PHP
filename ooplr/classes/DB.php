@@ -3,7 +3,8 @@
 class DB{
 	private static $_instance = null;
 	private $_pdo, 
-			$_query,$_error = false,
+			$_query,
+			$_error = false,
 			$_results,
 			$_count=0;
 
@@ -27,7 +28,9 @@ class DB{
 		return self::$_instance;
 	}
 
-	/*This function takes in a sql statement and
+	/*This function takes in a sql statement and the parameters that needs to be 
+	 *bound to the statements. After binding all parameter values as a prepared 
+	 *statement, the sql statement is executed and the results and count variables are set.
 	 */
 	public function query($sql,$params = array()){
 		$this->_error = false;
@@ -49,6 +52,8 @@ class DB{
 		}
 	}
 
+	//Function to create a sql statement based on parameters. 
+	//The query function executes the newly created sql statement.
 	public function action($action,$table,$where = array()){
 		if(count($where) === 3){
 			$operators = array('=','>','<','>=','<=');
@@ -68,14 +73,17 @@ class DB{
 		return false;
 	}
 
+	//Function to get all the rows in the $table that match the $where specifications.
 	public function get($table, $where){
 		return $this->action('SELECT *',$table,$where);
 	}
 
+	//Function to delete all the rows in the $table that match the $where specifictions.
 	public function delete($table,$where){
 		return $this->action('DELETE',$table,$where);
 	}
 
+	//Function to insert into the $table based on the given $fields in the array
 	public function insert($table,$fields = array()){
 		if(count($fields)){
 			$keys = array_keys($fields);
@@ -98,6 +106,8 @@ class DB{
 		}
 		return false;
 	}
+
+	//Function updates the $table based on the given $id and $fields that need to be changed.$fields is an array.
 	public function update($table,$id,$fields){
 		$set = '';
 		$x = 1;
@@ -117,18 +127,22 @@ class DB{
 		return false;
 	}
 
+	//Function to return the results of the last query that was run
 	public function results(){
 		return $this->_results;
 	}
 
+	//Function to return the first row in the results 
 	public function first(){
 		return $this->results()[0];
 	}
 
+	//Function to return the amount of rows affected by the last query
 	public function count(){
 		return $this->_count;
 	}
 
+	//Function to return error messages
 	public function error(){
 		return $this->_error;
 	}
