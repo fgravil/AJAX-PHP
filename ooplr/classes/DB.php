@@ -7,6 +7,9 @@ class DB{
 			$_results,
 			$_count=0;
 
+	/*This constructor sets the db configurations defied in the Config class.
+	 *If the configurations are not defined properly an error message is thrown and the script dies.
+	 */
 	private function __construct(){
 		try{
 			$this->_pdo = new PDO('mysql:host=' . Config::get('mysql/host') . ';dbname=' . Config::get('mysql/db'),Config::get('mysql/username'),Config::get('mysql/password'));
@@ -14,6 +17,9 @@ class DB{
 			die($e->getMessage());
 		}
 	}
+
+	//This function creates a new instance of the DB if one has not already been set.
+	// Returns the instance of the DB to follow the singleton pattern.
 	public static function getInstance(){
 		if(!isset(self::$_instance)){
 			self::$_instance = new DB();
@@ -21,6 +27,8 @@ class DB{
 		return self::$_instance;
 	}
 
+	/*This function takes in a sql statement and
+	 */
 	public function query($sql,$params = array()){
 		$this->_error = false;
 		if($this->_query = $this->_pdo->prepare($sql)){
