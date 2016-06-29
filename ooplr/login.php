@@ -12,9 +12,9 @@ if(Input::exists()){
 			$user = new User();
 			$login = $user->login(Input::get('username'),Input::get('password'));
 			if($login){
-				echo 'Success';
+				Redirect::to('index.php');
 			}else{
-				echo 'Sorry, Log in failed.';
+				echo '<p>Sorry, Log in failed.</p>';
 			}
 
 		}else{
@@ -32,7 +32,7 @@ if(Input::exists()){
 		<input type="text" name="username" id="username" autocomplete="off">
 	</div>
 	<div class="field">
-		<label for="password">Username</label>
+		<label for="password">Password</label>
 		<input type="password" name="password" id="password" autocomplete="off">
 	</div>
 	<input type="hidden" name="token" value="<?php echo Token::generate(); ?>">
