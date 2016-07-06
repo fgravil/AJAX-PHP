@@ -1,10 +1,15 @@
 <?php  
 require_once 'core/init.php';
 
+//Checks if the required input fields have been submitted and properly validated.
+//If the submitted input is passes the validation requirements, the new User can be
+//created via the user class.
 if(Input::exists('post')){
 
 	if(Token::check(Input::get('token'))){
 		$validate = new Validate();
+
+		//Requirements for some of the fields
 		$validation = $validate->check($_POST,array(
 			'username' => array(
 				'required' => true,
@@ -30,7 +35,10 @@ if(Input::exists('post')){
 		if($validate->passed()){
 			$user = new User();
 
+			//generates a random salt of siize 32
 		   $salt = Hash::salt(32);
+		   //creates the user by providing all the required input fiields to be passed into the DB
+		   //Once the User is created the page redirects to the home page
 			try{
 				$user->create(array(
 					'username' => Input::get('username'),
